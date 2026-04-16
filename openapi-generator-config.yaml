@@ -2,7 +2,7 @@
 # Generated output goes to: sdks/python
 packageName: alexasomba_paystack
 projectName: alexasomba-paystack
-packageVersion: 1.3.0
+packageVersion: 1.3.1
 # Used for README/repository metadata in generator templates
 gitHost: github.com
 gitUserId: alexasomba
@@ -10,3 +10,4 @@ gitRepoId: paystack-python
 # Keep it small and broadly compatible
 library: urllib3
 hideGenerationTimestamp: true
+removeOperationIdPrefix: true
