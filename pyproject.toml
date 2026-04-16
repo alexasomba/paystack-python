@@ -1,10 +1,8 @@
 [project]
 name = "alexasomba_paystack"
-version = "1.1.1"
+version = "1.3.1"
 description = "Paystack"
-authors = [
-  {name = "OpenAPI Generator Community",email = "techsupport@paystack.com"},
-]
+authors = [{ name = "OpenAPI Generator Community", email = "techsupport@paystack.com" }]
 readme = "README.md"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Paystack"]
 requires-python = ">=3.9"
@@ -17,7 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/alexasomba/paystack-openapi"
+Repository = "https://github.com/alexasomba/paystack-python"
 
 [tool.poetry]
 requires-poetry = ">=2.0"
@@ -77,9 +75,7 @@ disallow_any_generics = true
 #warn_return_any = true
 
 [[tool.mypy.overrides]]
-module = [
-  "alexasomba_paystack.configuration",
-]
+module = ["alexasomba_paystack.configuration"]
 warn_unused_ignores = true
 strict_equality = true
 extra_checks = true
