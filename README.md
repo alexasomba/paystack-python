@@ -120,39 +120,39 @@ This SDK is generated from the SDK spec in this monorepo and covers the operatio
 
 For this SDK, these schema families are emitted as generated model modules under `alexasomba_paystack.models` and used by the generated API modules under `alexasomba_paystack.api`.
 
-| Module                                                               | Schema / model family                                    |
-| -------------------------------------------------------------------- | -------------------------------------------------------- |
-| Transactions                                                         | `Transaction*`                                           |
-| Verify Payments (Transaction verification)                           | `VerifyResponse / TransactionFetchResponse`              |
-| Charges                                                              | `Charge*`                                                |
-| Bulk Charges                                                         | `BulkCharge*`                                            |
-| Subaccounts                                                          | `Subaccount*`                                            |
-| Transaction Splits                                                   | `Split*`                                                 |
-| Terminal                                                             | `Terminal*`                                              |
-| Virtual Terminal                                                     | `VirtualTerminal*`                                       |
-| Customers                                                            | `Customer*`                                              |
-| Direct Debit                                                         | `DirectDebit*`                                           |
-| Dedicated Virtual Accounts                                           | `DedicatedNuban* / DedicatedVirtualAccount*`             |
-| Apple Pay                                                            | `ApplePay*`                                              |
-| Plans                                                                | `Plan*`                                                  |
-| Subscriptions                                                        | `Subscription*`                                          |
-| Transfer Recipients                                                  | `TransferRecipient*`                                     |
-| Transfers                                                            | `Transfer*`                                              |
-| Transfers Control (OTP settings; under Transfers)                    | `TransferEnable* / TransferDisable* / TransferFinalize*` |
-| Balance                                                              | `Balance*`                                               |
-| Payment Requests (Invoices)                                          | `PaymentRequest*`                                        |
-| Verification (Resolve Account / Validate Account / Resolve Card BIN) | `Verification*`                                          |
-| Products                                                             | `Product*`                                               |
-| Storefronts                                                          | `Storefront*`                                            |
-| Orders                                                               | `Order*`                                                 |
-| Payment Pages                                                        | `Page*`                                                  |
-| Settlements                                                          | `Settlement*`                                            |
-| Integration                                                          | `Integration*`                                           |
-| Control Panel (Payment session timeout; under Integration)           | `ControlPanel*`                                          |
-| Refunds                                                              | `Refund*`                                                |
-| Disputes                                                             | `Dispute*`                                               |
-| Banks                                                                | `Bank*`                                                  |
-| Miscellaneous                                                        | `Miscellaneous* / Currency`                              |
+| Module | Schema / model family |
+| --- | --- |
+| Transactions | `Transaction*` |
+| Verify Payments (Transaction verification) | `VerifyResponse / TransactionFetchResponse` |
+| Charges | `Charge*` |
+| Bulk Charges | `BulkCharge*` |
+| Subaccounts | `Subaccount*` |
+| Transaction Splits | `Split*` |
+| Terminal | `Terminal*` |
+| Virtual Terminal | `VirtualTerminal*` |
+| Customers | `Customer*` |
+| Direct Debit | `DirectDebit*` |
+| Dedicated Virtual Accounts | `DedicatedNuban* / DedicatedVirtualAccount*` |
+| Apple Pay | `ApplePay*` |
+| Plans | `Plan*` |
+| Subscriptions | `Subscription*` |
+| Transfer Recipients | `TransferRecipient*` |
+| Transfers | `Transfer*` |
+| Transfers Control (OTP settings; under Transfers) | `TransferEnable* / TransferDisable* / TransferFinalize*` |
+| Balance | `Balance*` |
+| Payment Requests (Invoices) | `PaymentRequest*` |
+| Verification (Resolve Account / Validate Account / Resolve Card BIN) | `Verification*` |
+| Products | `Product*` |
+| Storefronts | `Storefront*` |
+| Orders | `Order*` |
+| Payment Pages | `Page*` |
+| Settlements | `Settlement*` |
+| Integration | `Integration*` |
+| Control Panel (Payment session timeout; under Integration) | `ControlPanel*` |
+| Refunds | `Refund*` |
+| Disputes | `Dispute*` |
+| Banks | `Bank*` |
+| Miscellaneous | `Miscellaneous* / Currency` |
 
 ## Module Examples
 
