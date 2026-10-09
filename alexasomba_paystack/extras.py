@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import secrets
 import time
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable, Optional, Sequence, Tuple, TypeVar
+from typing import Any, Callable, TypeVar
 
 import urllib3
 
@@ -11,7 +12,7 @@ from alexasomba_paystack.api_client import ApiClient
 from alexasomba_paystack.configuration import Configuration
 from alexasomba_paystack.exceptions import ApiException
 
-DEFAULT_REQUEST_ID_HEADERS: Tuple[str, ...] = (
+DEFAULT_REQUEST_ID_HEADERS: tuple[str, ...] = (
     "x-paystack-request-id",
     "x-request-id",
 )
@@ -23,7 +24,7 @@ def create_idempotency_key() -> str:
     return secrets.token_hex(16)
 
 
-def get_paystack_request_id(headers: Any) -> Optional[str]:
+def get_paystack_request_id(headers: Any) -> str | None:
     if not headers:
         return None
 
@@ -31,7 +32,7 @@ def get_paystack_request_id(headers: Any) -> Optional[str]:
     for name in DEFAULT_REQUEST_ID_HEADERS:
         try:
             value = headers.get(name)
-        except Exception:
+        except (AttributeError, TypeError):
             value = None
         if value:
             v = str(value).strip()
@@ -45,11 +46,11 @@ class PaystackApiError(RuntimeError):
         self,
         message: str,
         *,
-        status: Optional[int] = None,
-        url: Optional[str] = None,
-        request_id: Optional[str] = None,
-        error: Optional[BaseException] = None,
-        body: Optional[str] = None,
+        status: int | None = None,
+        url: str | None = None,
+        request_id: str | None = None,
+        error: BaseException | None = None,
+        body: str | None = None,
         data: Any = None,
         headers: Any = None,
     ) -> None:
@@ -63,7 +64,7 @@ class PaystackApiError(RuntimeError):
         self.headers = headers
 
 
-def to_paystack_api_error(exc: BaseException, *, url: Optional[str] = None) -> PaystackApiError:
+def to_paystack_api_error(exc: BaseException, *, url: str | None = None) -> PaystackApiError:
     if isinstance(exc, PaystackApiError):
         return exc
 
@@ -105,20 +106,20 @@ class RetryOptions:
 
 @dataclass
 class ReliabilityOptions:
-    timeout_seconds: Optional[float] = None
+    timeout_seconds: float | None = None
     retry: RetryOptions = field(default_factory=RetryOptions)
     idempotency_enabled: bool = False
     idempotency_header: str = DEFAULT_IDEMPOTENCY_HEADER
-    idempotency_key: Optional[str] = None
+    idempotency_key: str | None = None
     idempotency_auto: bool = True
 
 
 class ReliableApiClient(ApiClient):
     def __init__(
         self,
-        configuration: Optional[Configuration] = None,
+        configuration: Configuration | None = None,
         *,
-        reliability: Optional[ReliabilityOptions] = None,
+        reliability: ReliabilityOptions | None = None,
     ) -> None:
         super().__init__(configuration=configuration)
         self._reliability = reliability or ReliabilityOptions()
@@ -139,7 +140,7 @@ class ReliableApiClient(ApiClient):
             m = str(method).upper()
             if reliability.idempotency_enabled and m == "POST":
                 header_name = reliability.idempotency_header or DEFAULT_IDEMPOTENCY_HEADER
-                if header_name not in header_params and header_name.lower() not in {k.lower() for k in header_params.keys()}:
+                if header_name not in header_params and header_name.lower() not in {k.lower() for k in header_params}:
                     key = reliability.idempotency_key
                     if not key and reliability.idempotency_auto:
                         key = create_idempotency_key()
@@ -187,15 +188,15 @@ def create_configuration(
     secret_key: str,
     *,
     base_url: str = "https://api.paystack.co",
-    timeout_seconds: Optional[float] = None,
-    retry: Optional[urllib3.Retry] = None,
+    timeout_seconds: float | None = None,
+    retry: urllib3.Retry | None = None,
 ) -> Configuration:
     cfg = Configuration(host=base_url, access_token=secret_key)
 
     # Default timeouts are applied by ReliableApiClient per-request.
     # Retries configure urllib3's pool manager.
     if retry is not None:
-        setattr(cfg, "retries", retry)
+        cfg.retries = retry
 
     # Keep for caller convenience
     _ = timeout_seconds
@@ -206,10 +207,10 @@ def create_paystack_client(
     secret_key: str,
     *,
     base_url: str = "https://api.paystack.co",
-    timeout_seconds: Optional[float] = None,
-    retry: Optional[RetryOptions] = None,
+    timeout_seconds: float | None = None,
+    retry: RetryOptions | None = None,
     idempotency: bool = False,
-    idempotency_key: Optional[str] = None,
+    idempotency_key: str | None = None,
     idempotency_auto: bool = True,
     idempotency_header: str = DEFAULT_IDEMPOTENCY_HEADER,
 ) -> ReliableApiClient:
@@ -256,8 +257,8 @@ def retry_call(
     min_delay_seconds: float = 0.25,
     max_delay_seconds: float = 2.0,
 ) -> T:
-    last: Optional[BaseException] = None
-    for attempt in range(0, retries + 1):
+    last: BaseException | None = None
+    for attempt in range(retries + 1):
         try:
             return fn()
         except PaystackApiError as e:
